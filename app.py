@@ -133,16 +133,55 @@ def mostrar_menu_y_elegir_procesamiento():
 
 """""paula """
 def preparar_datos(humedad):
-    pass
+    """Aplica el procesamiento elegido a los datos."""
+    opcion = mostrar_menu_y_elegir_procesamiento()
 
+    if opcion == "2":
+        # El servidor devuelve los datos en el orden FIFO procesado
+        humedad = enviar_y_procesar_en_servidor(humedad)
 
+    return humedad
 def analizar_humedad(humedad, limite=40):
-    pass
+    """Analiza la humedad y devuelve el total de mediciones con posible sequía."""
+    sequia = 0
+    print("\n===== ANÁLISIS DE MEDICIONES =====\n")
+
+    total_sequia = analizar_datos(
+        humedad,
+        0,
+        limite,
+        sequia
+    )
+
+    return total_sequia
 
 
 def mostrar_resultados(total_mediciones, total_sequia):
-    pass
+    """Imprime los resultados del análisis."""
+    porcentaje = (total_sequia / total_mediciones) * 100
+
+    print("\n==========================================")
+    print("              RESULTADOS")
+    print("==========================================")
+
+    print(f"Total de mediciones: {total_mediciones}")
+    print(f"Mediciones con posible sequía: {total_sequia}")
+    print(f"Porcentaje de posible sequía: {porcentaje:.2f}%")
+
 
 
 def main():
-    pass
+    """Función principal del programa."""
+    print("==========================================")
+    print("       MONITOREO DE HUMEDAD DEL SUELO")
+    print("==========================================")
+
+    humedad = pedir_datos()
+    humedad = preparar_datos(humedad)
+    total_sequia = analizar_humedad(humedad)
+    total_mediciones = len(humedad)
+    mostrar_resultados(total_mediciones, total_sequia)
+
+
+if _name_ == "_main_":
+    main()
