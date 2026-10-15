@@ -42,27 +42,67 @@ def analizar_datos(datos, indice, limite, sequia):
 
 
 
-""""" david """
-def barra_progreso(duracion_ms, ancho=30):
-    pass
 
-class ServidorSimulado: 
-    def __init__(self):
-        self.cola = None
-        self.procesados = None
+# ------------------------------------------
+# BARRA DE PROGRESO CON RETRASO
+# ------------------------------------------
+
+def barra_progreso(duracion_ms, ancho=30):
+    """Muestra una barra que se llena durante duracion_ms milisegundos."""
+    pausa = (duracion_ms / 1000) / ancho     # segundos por paso
+
+    for paso in range(ancho + 1):
+        porcentaje = int((paso / ancho) * 100)
+        llena = "█" * paso
+        vacia = "░" * (ancho - paso)
+        sys.stdout.write(f"\r  Procesando: [{llena}{vacia}] {porcentaje}%")
+        sys.stdout.flush()
+        time.sleep(pausa)
+
+    print()   # salto de línea al terminar
+
+class ServidorSimulado:
+    def _init_(self):
+        self.cola = deque()        # Cola FIFO de datos recibidos
+        self.procesados = []       # Datos ya procesados, en orden de salida
 
     def recibir(self, dato):
-        pass
+        """Simula el envío de un dato al servidor (ENQUEUE)."""
+        self.cola.append(dato)
+        print(f"  [CLIENTE → SERVIDOR] Dato enviado: {dato}%")
 
     def procesar_siguiente(self):
-        pass
+        """El servidor atiende el primer dato que llegó (DEQUEUE)."""
+        dato = self.cola.popleft()
+
+        # Espera de 2000 ms con barra de progreso antes de imprimir
+        barra_progreso(RETRASO_MS)
+
+        self.procesados.append(dato)
+        print(
+            f"  [SERVIDOR] Dato procesado: {dato}% "
+            f"| Pendientes en cola: {len(self.cola)}\n"
+        )
+        return dato
 
     def hay_pendientes(self):
-        pass
+        return len(self.cola) > 0
 
 
 def enviar_y_procesar_en_servidor(datos):
-    pass
+    """Envía los datos en orden y el servidor los procesa uno por uno."""
+    servidor = ServidorSimulado()
+
+    print("\n===== ENVIANDO DATOS AL SERVIDOR (FIFO) =====\n")
+    for dato in datos:
+        servidor.recibir(dato)
+
+    print("\n===== SERVIDOR PROCESANDO UNO POR UNO =====\n")
+    while servidor.hay_pendientes():
+        servidor.procesar_siguiente()
+
+    # Devuelve los datos en el orden en que el servidor los procesó
+    return servidor.procesados
 
 """""sofia """
 def pedir_datos():
