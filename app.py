@@ -1,5 +1,6 @@
-RETRASO_MS = 2000
-
+import sys
+import time
+from collections import deque
 
 def analizar_datos(datos, indice, limite, sequia):
 
@@ -39,15 +40,13 @@ def analizar_datos(datos, indice, limite, sequia):
     )
 
 
-def factorial(n):
-    pass
 
 
+""""" david """
 def barra_progreso(duracion_ms, ancho=30):
     pass
 
-
-class ServidorSimulado:
+class ServidorSimulado: 
     def __init__(self):
         self.cola = None
         self.procesados = None
@@ -65,7 +64,7 @@ class ServidorSimulado:
 def enviar_y_procesar_en_servidor(datos):
     pass
 
-
+"""""sofia """
 def pedir_datos():
     """Solicita al usuario 10 mediciones de humedad."""
     print("Ingresa datos")
@@ -76,6 +75,8 @@ def pedir_datos():
         humedad.append(humedad_dato)
     return humedad
 
+def analizar_datos(datos, indice, limite, sequia):
+    pass
 
 def mostrar_menu_y_elegir_procesamiento():
     """Muestra el menú y devuelve la opción elegida."""
@@ -90,7 +91,7 @@ def mostrar_menu_y_elegir_procesamiento():
     while opcion not in ("1", "2"):
         opcion = input("Opción inválida. Elige 1 o 2: ").strip()
 
-
+"""""paula """
 def preparar_datos(humedad):
     pass
 
