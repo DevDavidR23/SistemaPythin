@@ -2,8 +2,10 @@ import sys
 import time
 from collections import deque
 
-def analizar_datos(datos, indice, limite, sequia):
+RETRASO_MS = 2000
 
+
+def analizar_datos(datos, indice, limite, sequia):
     # CASO BASE:
     # Si el índice llega al tamaño de la lista,
     # significa que ya analizamos todos los datos.
@@ -22,7 +24,6 @@ def analizar_datos(datos, indice, limite, sequia):
 
         # Aumentar el contador de mediciones con posible sequía
         sequia += 1
-
     else:
         print(
             f"Medición {indice + 1}: {humedad}% "
@@ -30,17 +31,12 @@ def analizar_datos(datos, indice, limite, sequia):
         )
 
     # LLAMADA RECURSIVA:
-    # La función se llama nuevamente para analizar
-    # el siguiente dato de la lista.
     return analizar_datos(
         datos,
         indice + 1,
         limite,
         sequia
     )
-
-
-
 
 
 # ------------------------------------------
@@ -62,7 +58,7 @@ def barra_progreso(duracion_ms, ancho=30):
     print()   # salto de línea al terminar
 
 class ServidorSimulado:
-    def _init_(self):
+    def __init__(self):
         self.cola = deque()        # Cola FIFO de datos recibidos
         self.procesados = []       # Datos ya procesados, en orden de salida
 
@@ -115,8 +111,6 @@ def pedir_datos():
         humedad.append(humedad_dato)
     return humedad
 
-def analizar_datos(datos, indice, limite, sequia):
-    pass
 
 def mostrar_menu_y_elegir_procesamiento():
     """Muestra el menú y devuelve la opción elegida."""
@@ -131,6 +125,9 @@ def mostrar_menu_y_elegir_procesamiento():
     while opcion not in ("1", "2"):
         opcion = input("Opción inválida. Elige 1 o 2: ").strip()
 
+    return opcion
+
+
 """""paula """
 def preparar_datos(humedad):
     """Aplica el procesamiento elegido a los datos."""
@@ -141,6 +138,8 @@ def preparar_datos(humedad):
         humedad = enviar_y_procesar_en_servidor(humedad)
 
     return humedad
+
+
 def analizar_humedad(humedad, limite=40):
     """Analiza la humedad y devuelve el total de mediciones con posible sequía."""
     sequia = 0
@@ -158,7 +157,10 @@ def analizar_humedad(humedad, limite=40):
 
 def mostrar_resultados(total_mediciones, total_sequia):
     """Imprime los resultados del análisis."""
-    porcentaje = (total_sequia / total_mediciones) * 100
+    if total_mediciones == 0:
+        porcentaje = 0.0
+    else:
+        porcentaje = (total_sequia / total_mediciones) * 100
 
     print("\n==========================================")
     print("              RESULTADOS")
@@ -167,7 +169,6 @@ def mostrar_resultados(total_mediciones, total_sequia):
     print(f"Total de mediciones: {total_mediciones}")
     print(f"Mediciones con posible sequía: {total_sequia}")
     print(f"Porcentaje de posible sequía: {porcentaje:.2f}%")
-
 
 
 def main():
@@ -183,5 +184,4 @@ def main():
     mostrar_resultados(total_mediciones, total_sequia)
 
 
-if _name_ == "_main_":
-    main()
+main()
