@@ -107,7 +107,18 @@ def pedir_datos():
     limite_datos = 10
     humedad = []
     for i in range(limite_datos):
-        humedad_dato = int(input(f"Medición {i + 1}: "))
+        while True:
+            try:
+                humedad_dato = int(input(f"Medición {i + 1} (0-100): "))
+            except ValueError:
+                print("Entrada inválida. Ingresa un número entero entre 0 y 100.")
+                continue
+
+            if 0 <= humedad_dato <= 100:
+                break
+
+            print("Valor inválido. La humedad debe estar entre 0 y 100.")
+
         humedad.append(humedad_dato)
     return humedad
 
@@ -120,12 +131,17 @@ def mostrar_menu_y_elegir_procesamiento():
     print("1. Procesar datos localmente")
     print("2. Enviar al servidor y procesar uno por uno (FIFO)")
 
-    opcion = input("Elige una opción (1/2): ").strip()
+    while True:
+        try:
+            opcion = int(input("Elige una opción (1/2): ").strip())
+        except ValueError:
+            print("Opción inválida. Ingresa 1 o 2.")
+            continue
 
-    while opcion not in ("1", "2"):
-        opcion = input("Opción inválida. Elige 1 o 2: ").strip()
+        if opcion in (1, 2):
+            return str(opcion)
 
-    return opcion
+        print("Opción inválida. Ingresa 1 o 2.")
 
 
 """""paula """
